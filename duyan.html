@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Exam Results - Nguyễn Duy An</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a3a52;
+            --secondary: #2d5a7b;
+            --accent: #d4a574;
+            --light-bg: #f5f3f0;
+            --dark-text: #1a1a1a;
+            --border: #e0ddd9;
+            --success: #4a7c59;
+            --warning: #d97706;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            background: var(--light-bg);
+        }
+
+        body {
+            font-family: 'Noto Sans', 'Georgia', 'Garamond', serif;
+            color: var(--dark-text);
+            line-height: 1.6;
+            letter-spacing: 0.3px;
+        }
+
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            border-bottom: 3px solid var(--accent);
+            box-shadow: 0 4px 12px rgba(26, 58, 82, 0.2);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 0.95rem;
+            opacity: 0.95;
+            font-style: italic;
+        }
+
+        /* Pages Container */
+        .pages {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .page {
+            min-width: 100%;
+            display: none;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .page.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* Page 1: Name Entry */
+        .page-name {
+            background: linear-gradient(180deg, var(--light-bg) 0%, #fafbf8 100%);
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .name-card {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 3rem 2.5rem;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 8px 24px rgba(26, 58, 82, 0.12);
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .name-card h2 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .name-card p {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.95rem;
+            color: var(--dark-text);
+            margin-bottom: 0.6rem;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Georgia', serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.1);
+        }
+
+        .btn-start {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-start:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(26, 58, 82, 0.3);
+        }
+
+        .btn-start:active {
+            transform: translateY(0);
+        }
+
+        /* Page 2: Scores Display */
+        .page-scores {
+            background: linear-gradient(180deg, var(--light-bg) 0%, #fafbf8 100%);
+            padding: 2rem 1rem;
+            overflow-y: auto;
+        }
+
+        .scores-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .welcome-section {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            animation: slideUp 0.6s ease;
+            box-shadow: 0 4px 12px rgba(26, 58, 82, 0.08);
+        }
+
+        .welcome-section h2 {
+            color: var(--primary);
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-section p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Scores Grid */
+        .scores-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .score-card {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            animation: slideUp 0.6s ease;
+            animation-fill-mode: both;
+            box-shadow: 0 4px 12px rgba(26, 58, 82, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .score-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(26, 58, 82, 0.15);
+        }
+
+        .score-card:nth-child(1) { animation-delay: 0.1s; }
+        .score-card:nth-child(2) { animation-delay: 0.2s; }
+        .score-card:nth-child(3) { animation-delay: 0.3s; }
+        .score-card:nth-child(4) { animation-delay: 0.4s; }
+        .score-card:nth-child(5) { animation-delay: 0.5s; }
+
+        .score-card.overall {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .score-label {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .score-card.overall .score-label {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .score-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .score-card.overall .score-value {
+            color: var(--accent);
+        }
+
+        .score-max {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-top: 0.3rem;
+        }
+
+        .score-card.overall .score-max {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Feedback Navigation */
+        .feedback-section {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            animation: slideUp 0.6s ease;
+            animation-delay: 0.6s;
+            animation-fill-mode: both;
+            box-shadow: 0 4px 12px rgba(26, 58, 82, 0.08);
+        }
+
+        .feedback-section h3 {
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-bottom: 1.2rem;
+            font-weight: 600;
+        }
+
+        .feedback-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .btn-feedback {
+            padding: 1.2rem;
+            border: 2px solid var(--border);
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-align: center;
+            color: var(--primary);
+            letter-spacing: 0.3px;
+        }
+
+        .btn-feedback:hover {
+            border-color: var(--accent);
+            background: rgba(212, 165, 116, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .btn-feedback:active {
+            transform: translateY(0);
+        }
+
+        /* Page 3: Detailed Feedback */
+        .page-feedback {
+            background: linear-gradient(180deg, var(--light-bg) 0%, #fafbf8 100%);
+            padding: 2rem 1rem;
+            overflow-y: auto;
+        }
+
+        .feedback-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .feedback-header {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            animation: slideUp 0.6s ease;
+            box-shadow: 0 4px 12px rgba(26, 58, 82, 0.08);
+        }
+
+        .feedback-header h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feedback-header p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .feedback-content {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            animation: slideUp 0.6s ease;
+            box-shadow: 0 4px 12px rgba(26, 58, 82, 0.08);
+            line-height: 1.8;
+            color: var(--dark-text);
+        }
+
+        .feedback-content h3 {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 0.5rem;
+        }
+
+        .feedback-content h3:first-child {
+            margin-top: 0;
+        }
+
+        .feedback-content h4 {
+            color: var(--secondary);
+            font-size: 1rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+
+        .feedback-content p {
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+
+        .underline {
+            text-decoration: underline;
+        }
+
+        strong {
+            font-weight: 600;
+        }
+
+        .feedback-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        .feedback-content table th {
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid var(--border);
+        }
+
+        .feedback-content table td {
+            padding: 0.8rem;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .feedback-content table tr:nth-child(even) {
+            background: rgba(212, 165, 116, 0.03);
+        }
+
+        .language-toggle {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .lang-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--border);
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: var(--primary);
+        }
+
+        .lang-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .lang-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .language-section {
+            display: none;
+        }
+
+        .language-section.active {
+            display: block;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn-back {
+            flex: 1;
+            padding: 0.9rem;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--primary);
+            transition: all 0.3s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-back:hover {
+            border-color: var(--accent);
+            background: rgba(212, 165, 116, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .btn-back:active {
+            transform: translateY(0);
+        }
+
+        .btn-switch {
+            flex: 1;
+            padding: 0.9rem;
+            background: var(--secondary);
+            border: 2px solid var(--secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-switch:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .btn-switch:active {
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .name-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .scores-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+
+            .score-card {
+                padding: 1.2rem 1rem;
+            }
+
+            .score-value {
+                font-size: 2rem;
+            }
+
+            .feedback-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .page-name,
+            .page-scores,
+            .page-feedback {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>IELTS Exam Results</h1>
+            <p>Kết quả Kiểm tra Đầu vào IELTS</p>
+        </div>
+
+        <!-- Pages Container -->
+        <div class="pages">
+            <!-- Page 1: Name Entry -->
+            <div class="page page-name active">
+                <div class="name-card">
+                    <h2>Welcome</h2>
+                    <p>Please confirm your name to view your IELTS exam results and detailed feedback.</p>
+                    <div class="form-group">
+                        <label for="nameInput">Your Name</label>
+                        <input type="text" id="nameInput" placeholder="Enter your name" value="Nguyễn Duy An">
+                    </div>
+                    <button class="btn-start" onclick="startExam()">View Results</button>
+                </div>
+            </div>
+
+            <!-- Page 2: Scores Display -->
+            <div class="page page-scores">
+                <div class="scores-container">
+                    <div class="welcome-section">
+                        <h2>Congratulations, <span id="displayName">Student</span>!</h2>
+                        <p>Your IELTS examination has been completed. Below are your scores for each skill component and your overall band score. Click on the sections below to view detailed feedback and recommendations.</p>
+                    </div>
+
+                    <div class="scores-grid">
+                        <div class="score-card">
+                            <div class="score-label">Listening</div>
+                            <div class="score-value">7.5</div>
+                            <div class="score-max">/ 9.0</div>
+                        </div>
+                        <div class="score-card">
+                            <div class="score-label">Reading</div>
+                            <div class="score-value">6.5</div>
+                            <div class="score-max">/ 9.0</div>
+                        </div>
+                        <div class="score-card">
+                            <div class="score-label">Speaking</div>
+                            <div class="score-value">6.5</div>
+                            <div class="score-max">/ 9.0</div>
+                        </div>
+                        <div class="score-card">
+                            <div class="score-label">Writing</div>
+                            <div class="score-value">6.5</div>
+                            <div class="score-max">/ 9.0</div>
+                        </div>
+                        <div class="score-card overall">
+                            <div class="score-label">Overall Band Score</div>
+                            <div class="score-value">7.0</div>
+                            <div class="score-max">/ 9.0</div>
+                        </div>
+                    </div>
+
+                    <div class="feedback-section">
+                        <h3>Detailed Feedback Available</h3>
+                        <p style="margin-bottom: 1.5rem; color: #666;">Click on the sections below to view comprehensive feedback for your Speaking and Writing components, including strengths, weaknesses, and expert comments.</p>
+                        <div class="feedback-buttons">
+                            <button class="btn-feedback" onclick="goToFeedback('speaking')">Speaking Feedback</button>
+                            <button class="btn-feedback" onclick="goToFeedback('writing')">Writing Feedback</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page 3: Detailed Feedback -->
+            <div class="page page-feedback">
+                <div class="feedback-container">
+                    <div class="feedback-header">
+                        <h2 id="feedbackTitle">Speaking Feedback</h2>
+                        <p>Comprehensive evaluation and constructive recommendations</p>
+                    </div>
+
+                    <div class="feedback-content">
+                        <!-- Speaking Feedback -->
+                        <div id="speakingFeedback">
+                            <div class="language-toggle">
+                                <button class="lang-btn active" onclick="switchLanguage('en', 'speaking')">English</button>
+                                <button class="lang-btn" onclick="switchLanguage('vi', 'speaking')">Tiếng Việt</button>
+                            </div>
+
+                            <!-- English Version -->
+                            <div class="language-section active" id="speaking-en">
+                                <h3>Candidate's Responses</h3>
+
+                                <h4>Part 1: Introduction and Interview</h4>
+
+                                <p><strong>1. Do you walk a lot?</strong></p>
+                                <p>Of course, I do work. However, I don't consider it as a lot since I only walk in my house or at my university when I have to change the classrooms. <span class="underline">Um, honestly, I,</span> most of the time, I use my motorbike as a means of transportation to travel from places to places in Ho Chi Minh City. <span class="underline">Um,</span> and I rarely spend some time walking in the parks or doing exercises. And that's one of the reasons why I cannot keep fit all the time.</p>
+
+                                <p><strong>2. Do you prefer typing or handwriting?</strong></p>
+                                <p>It seems to me that both typing and handwriting have their own pros and cons. <span class="underline">Uh</span>, with typing, it is usually more convenient and faster. However, it's quite rigid, which means you cannot create your own decoration <span class="underline">uh </span>in your writing, and it's more appropriate for <span class="underline">uh formal formal</span> texts or formal letters. <span class="underline">Uh</span>, in contrast, handwriting <strong>is more, as free as </strong>and you can decorate your piece of writing with drawings or <span class="underline">uh </span>small icons. However, it might take a lot of time to finish a piece of writing. So to me, it depends on the context or the types of writing.</p>
+
+                                <p><strong>3. What do you usually do when you have days off?</strong></p>
+                                <p>Speaking of leisure activities on my days off, I would say there are many, but <span class="underline">uh</span> the one that I always do is listening to music, particularly US, UK songs. Um, when listening to these kinds of songs, I can indulge in the <span class="underline">up the</span> upbeat rhythm and also improve my <span class="underline">com </span>listening and reading comprehension skills. So basically, I can both relax after a lot of days <strong>buried under with a lot of <span class="underline">uh</span> assignments</strong> at school, and I can also improve my English language. And that's definitely beneficial to me, right?</p>
+
+                                <h4>Part 2: Individual Long Turn</h4>
+
+                                <p><strong>Describe a piece of technology (not a phone) that you would like to own</strong></p>
+                                <p><strong>You should say:</strong></p>
+                                <p>What it is<br>How much it costs<br>How you knew it<br>And explain why you would like to own it</p>
+
+                                <p>Well, in terms of a piece of technology that I've always been dreaming of, I would say a smart watch is definitely the best in town. <span class="underline">Um</span>, as it is a smartwatch, it comprises many features and <span class="underline">um</span> usages as a smartphone can serve, such as interactive screen, <span class="underline">um </span>calling or <strong>heartbeat counter</strong> features. <span class="underline">As I, as</span> far as I research, it might cost around 10 to 20 million VNĐ.</p>
+
+                                <p><span class="underline">Um,</span> and it was back in my high school years, I used to be obese and give little attention to technology. At that time, I always had a notion in my mind that everything would be enough with just a smartphone. As time goes by, I've realized <strong>the importance of technological <span class="underline">um</span> application into the healthcare field</strong>. With my obesity symptoms, I've been trying to <span class="underline">uh</span> find the appropriate methods to keep fit, to lose weight, and that was the exact moment when I knew that I needed a smartwatch to keep track of my <span class="underline">uh</span> calories consumption and my burned calories as well as my heart speed.</p>
+
+                                <p><span class="underline">Um,</span> as I mentioned previously, a smartwatch is surely beneficial to me as it provides me with <span class="underline">uh</span> many health advantages. Moreover, <strong>it can also make my calling more convenient</strong>. <span class="underline">Uh</span>, so to me, next time when buying a piece of technology, a smartwatch is definitely the prioritized item.</p>
+
+                                <h4>Part 3: Two-Way Discussion</h4>
+
+                                <p><strong>1. What technology do young people like to use?</strong></p>
+                                <p>When it comes to technology, <span class="underline">uh</span> which is mainly used by young people, I reckon one of the most popular ones is called Artificial Intelligence Technology, or AI in short, <span class="underline">um</span> such as Gemini or ChatGPT. Recently, there is obviously a diversity of AI content (mispronounced) or <span class="underline">um</span> videos made by AI and the teenagers are having a tendency to create entertaining content (mispronounced) based on AI, <span class="underline">uh</span> like unrealistic characters singing or dancing to meme songs. <span class="underline">Um</span>, from my perspective, AI is like a double-edged sword. For instance, if governments or organizations want to <span class="underline">um</span> spread the information of a specific issue in a cuter way, in a more, <span class="underline">in a</span> friendlier way, they can utilize <span class="underline">um</span> AI to create cute images or videos <span class="underline">uh</span> spreading <span class="underline">the the the</span> messages. <span class="underline">Uh</span>, in contrast, if organizations make, just <span class="underline">uh</span>, if organizations keep making use of AI to <span class="underline">um</span> create unrealistic characters or nonsense content (mispronounced), <span class="underline">uh</span> which might trigger the confusion <span class="underline">uh</span> among the viewers, particularly the teenagers. And this might lead to <span class="underline">the the the</span> negative impact on <span class="underline">the, on the the</span> mindset and the <strong>cognitivism</strong> of young people affecting the way they behave, the way they <span class="underline">um</span> interact with others. It will, <span class="underline">um</span>, they will be less <span class="underline">um</span> serious.</p>
+
+                                <p><strong>2. What are the differences between online and face-to-face communication?</strong></p>
+                                <p>Online and face-to-face communication, despite their certain similarities, have several differences between them. When it comes to face-to-face communication, it involves meetings where people see each other in real life and in person. People can <span class="underline">uh</span> freely and directly exchange information and <span class="underline">uh</span> express their emotions. While online communication, though, <span class="underline">um</span> still meets the standards of face-to-face communication have to occur via technological screens, <span class="underline">um</span> <span class="underline">chatting through a message, chatting through</span> a social media platforms or video calling are all considered online <span class="underline">uh</span> communication. Each of <span class="underline">uh</span> these means of communication has its own pros and cons. <span class="underline">Um</span>, for instance, <span class="underline">um uh</span>, online communication might help people <span class="underline">uh</span> save more time and effort when they don't have to go outside and they don't need to spend a lot of time just to contact (mispronounced) each other. However, it might have some drawbacks. For instance, <span class="underline">um</span> <span class="underline">you're, uh and you're</span> giving a sensitive or an offensive joke <span class="underline">and the, and the</span> Wi-Fi or the internet suddenly collapsed, it would be a nightmare where <span class="underline">um</span> inevitable conflicts <span class="underline">will, would</span> arise. <span class="underline">Um</span>, about face-to-face communication, <span class="underline">um, it is one, it is</span> the most traditional means of communication. <span class="underline">Um</span>, people can <span class="underline">though, even though</span> people have to see each other in person, which means they have to make a lot of effort to see each other and spend <span class="underline">um</span> a lot of time to see each other, <span class="underline">um they they they</span> can still make <span class="underline">um</span> physical gestures such as handshaking or patting each other's shoulders <span class="underline">uh</span> that online communication can never be done. <span class="underline">Um</span>, for example, <span class="underline">um</span> with just a little smirk or a little raise of the eyebrows can be a sign of either <span class="underline">uh</span> negative or positive feelings. Therefore, it depends on the level of formality and <span class="underline">uh</span> importance that we should decide <span class="underline">uh</span> to choose between online and face-to-face communication in order to meet the purposes of the communication and to <span class="underline">um</span> bring us the benefits.</p>
+
+                                <h3>Overall Assessment</h3>
+                                <p>The candidate demonstrates solid intermediate English proficiency with consistent ability to communicate on a variety of topics. While the speech shows good coherence and reasonable accuracy, there are some issues with pronunciation, some unnatural phrasing, and occasional hesitation that prevent a higher band rating. The candidate's strength lies in fluency, vocabulary use and topic development. However, responses for part 3 are unnecessarily long and not natural to produce in exam's conditions.</p>
+
+                                <h3>Detailed Evaluation Criteria</h3>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Criterion</th>
+                                            <th>Score</th>
+                                            <th>Comment</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Fluency & coherence</td>
+                                            <td>6-7</td>
+                                            <td><strong>Strengths:</strong> Speaks at reasonable length without significant pauses (consistent with Band 6). Generally maintains coherence throughout responses. Uses some connective phrases effectively ("Speaking of leisure activities," "When it comes to technology"). Attempts to develop topics systematically (Part 2 follows the cue card structure). Good attempt at linking ideas within topics.<br><br><strong>Weaknesses:</strong> Frequent self-repetition, self-correction, false start and disfluencies. Occasional hesitation and repetition that breaks the flow. Multiple instances of "Um" and "Uh" fillers (though acceptable in moderation). Overuse of certain discourse markers. For example, "and" used frequently at the start of sentences/clauses</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lexical resource</td>
+                                            <td>6-7</td>
+                                            <td><strong>Strengths:</strong> Adequate vocabulary for range of topics (fitness, technology, communication styles). Attempts some less common vocabulary: indulge in, prioritized item, double-edged sword, rigid, upbeat rhythm, comprises, features, notion, keep track of, inevitable, gestures, collapsed, etc. Good use of topic-specific vocabulary (music, healthcare, technology, communication). Successfully uses synonyms to add variety.<br><br><strong>Weaknesses:</strong> Misused or awkward phrasing: give little attention to technology, buried under with a lot of uh assignments, heartbeat counter, the importance of technological um application into the healthcare field, make my calling more convenient, cognitivism of young people</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Grammatical range & accuracy</td>
+                                            <td>7</td>
+                                            <td><strong>Strengths:</strong> Generally produces correct simple sentence forms. Uses a mix of simple and complex structures. Some accurate complex sentences: "When listening to these kinds of songs, I can indulge in the upbeat rhythm..." and "Despite their certain similarities, they have several differences between them". Relative clauses are generally well-formed. Subject-verb agreement is mostly accurate. Appropriate use of verb tenses in most contexts.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Pronunciation</td>
+                                            <td>7</td>
+                                            <td>Mispronunciations of "content," "communication," "contact". Generally acceptable accent.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Overall estimated band</td>
+                                            <td>6.5</td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Vietnamese Version -->
+                            <div class="language-section" id="speaking-vi">
+                                <h3>Phản hồi tổng thể về bài nói</h3>
+
+                                <h4>Part 1: Phần giới thiệu và phỏng vấn</h4>
+
+                                <p><strong>1. Do you walk a lot? (Bạn có đi bộ nhiều không?)</strong></p>
+                                <p>Of course, I do work. However, I don't consider it as a lot since I only walk in my house or at my university when I have to change the classrooms. Um, honestly, I, most of the time, I use my motorbike as a means of transportation to travel from places to places in Ho Chi Minh City. Um, and I rarely spend some time walking in the parks or doing exercises. And that's one of the reasons why I cannot keep fit all the time.</p>
+
+                                <p><strong>2. Do you prefer typing or handwriting? (Bạn thích đánh máy hay viết tay hơn?)</strong></p>
+                                <p>It seems to me that both typing and handwriting have their own pros and cons. Uh, with typing, it is usually more convenient and faster. However, it's quite rigid, which means you cannot create your own decoration uh in your writing, and it's more appropriate for uh formal formal texts or formal letters. Uh, in contrast, handwriting is more, as free as and you can decorate your piece of writing with drawings or uh small icons. However, it might take a lot of time to finish a piece of writing. So to me, it depends on the context or the types of writing.</p>
+
+                                <p><strong>3. What do you usually do when you have days off? (Bạn thường làm gì trong những ngày nghỉ?)</strong></p>
+                                <p>Speaking of leisure activities on my days off, I would say there are many, but uh the one that I always do is listening to music, particularly US, UK songs. Um, when listening to these kinds of songs, I can indulge in the up the upbeat rhythm and also improve my com listening and reading comprehension skills. So basically, I can both relax after a lot of days buried under with a lot of uh assignments at school, and I can also improve my English language. And that's definitely beneficial to me, right?</p>
+
+                                <h4>Part 2: Phần nói dài</h4>
+
+                                <p><strong>Describe a piece of technology (not a phone) that you would like to own (Hãy mô tả một công nghệ (không phải điện thoại) mà bạn muốn sở hữu)</strong></p>
+                                <p><strong>You should say: (Bạn nên nói về:)</strong></p>
+                                <p>What it is (Nó là gì)<br>How much it costs (Nó có giá bao nhiêu)<br>How you knew it (Bạn biết nó như thế nào)<br>And explain why you would like to own it (Và giải thích tại sao bạn muốn sở hữu nó)</p>
+
+                                <p>Well, in terms of a piece of technology that I've always been dreaming of, I would say a smart watch is definitely the best in town. <span class="underline">Um</span>, as it is a smartwatch, it comprises many features and <span class="underline">um</span> usages as a smartphone can serve, such as interactive screen, <span class="underline">um </span>calling or <strong>heartbeat counter</strong> features. <span class="underline">As I, as</span> far as I research, it might cost around 10 to 20 million VNĐ.</p>
+
+                                <p><span class="underline">Um,</span> and it was back in my high school years, I used to be obese and give little attention to technology. At that time, I always had a notion in my mind that everything would be enough with just a smartphone. As time goes by, I've realized <strong>the importance of technological <span class="underline">um</span> application into the healthcare field</strong>. With my obesity symptoms, I've been trying to <span class="underline">uh</span> find the appropriate methods to keep fit, to lose weight, and that was the exact moment when I knew that I needed a smartwatch to keep track of my <span class="underline">uh</span> calories consumption and my burned calories as well as my heart speed.</p>
+
+                                <p><span class="underline">Um,</span> as I mentioned previously, a smartwatch is surely beneficial to me as it provides me with <span class="underline">uh</span> many health advantages. Moreover, <strong>it can also make my calling more convenient</strong>. <span class="underline">Uh</span>, so to me, next time when buying a piece of technology, a smartwatch is definitely the prioritized item.</p>
+
+                                <h4>Part 3: Phần thảo luận hai chiều</h4>
+
+                                <p><strong>1. What technology do young people like to use? (Công nghệ nào mà giới trẻ thích sử dụng?)</strong></p>
+                                <p>When it comes to technology, <span class="underline">uh</span> which is mainly used by young people, I reckon one of the most popular ones is called Artificial Intelligence Technology, or AI in short, <span class="underline">um</span> such as Gemini or ChatGPT. Recently, there is obviously a diversity of AI content (mispronounced) or <span class="underline">um</span> videos made by AI and the teenagers are having a tendency to create entertaining content (mispronounced) based on AI, <span class="underline">uh</span> like unrealistic characters singing or dancing to meme songs. <span class="underline">Um</span>, from my perspective, AI is like a double-edged sword. For instance, if governments or organizations want to <span class="underline">um</span> spread the information of a specific issue in a cuter way, in a more, <span class="underline">in a</span> friendlier way, they can utilize <span class="underline">um</span> AI to create cute images or videos <span class="underline">uh</span> spreading <span class="underline">the the the</span> messages. <span class="underline">Uh</span>, in contrast, if organizations make, just <span class="underline">uh</span>, if organizations keep making use of AI to <span class="underline">um</span> create unrealistic characters or nonsense content (mispronounced), <span class="underline">uh</span> which might trigger the confusion <span class="underline">uh</span> among the viewers, particularly the teenagers. And this might lead to <span class="underline">the the the</span> negative impact on <span class="underline">the, on the the</span> mindset and the <strong>cognitivism</strong> of young people affecting the way they behave, the way they <span class="underline">um</span> interact with others. It will, <span class="underline">um</span>, they will be less <span class="underline">um</span> serious.</p>
+
+                                <p><strong>2. What are the differences between online and face-to-face communication? (Sự khác biệt giữa giao tiếp trực tuyến và giao tiếp trực tiếp là gì?)</strong></p>
+                                <p>Online and face-to-face communication, despite their certain similarities, have several differences between them. When it comes to face-to-face communication, it involves meetings where people see each other in real life and in person. People can <span class="underline">uh</span> freely and directly exchange information and <span class="underline">uh</span> express their emotions. While online communication, though, <span class="underline">um</span> still meets the standards of face-to-face communication have to occur via technological screens, <span class="underline">um</span> <span class="underline">chatting through a message, chatting through</span> a social media platforms or video calling are all considered online <span class="underline">uh</span> communication. Each of <span class="underline">uh</span> these means of communication has its own pros and cons. <span class="underline">Um</span>, for instance, <span class="underline">um uh</span>, online communication might help people <span class="underline">uh</span> save more time and effort when they don't have to go outside and they don't need to spend a lot of time just to contact (mispronounced) each other. However, it might have some drawbacks. For instance, <span class="underline">um</span> <span class="underline">you're, uh and you're</span> giving a sensitive or an offensive joke <span class="underline">and the, and the</span> Wi-Fi or the internet suddenly collapsed, it would be a nightmare where <span class="underline">um</span> inevitable conflicts <span class="underline">will, would</span> arise. <span class="underline">Um</span>, about face-to-face communication, <span class="underline">um, it is one, it is</span> the most traditional means of communication. <span class="underline">Um</span>, people can <span class="underline">though, even though</span> people have to see each other in person, which means they have to make a lot of effort to see each other and spend <span class="underline">um</span> a lot of time to see each other, <span class="underline">um they they they</span> can still make <span class="underline">um</span> physical gestures such as handshaking or patting each other's shoulders <span class="underline">uh</span> that online communication can never be done. <span class="underline">Um</span>, for example, <span class="underline">um</span> with just a little smirk or a little raise of the eyebrows can be a sign of either <span class="underline">uh</span> negative or positive feelings. Therefore, it depends on the level of formality and <span class="underline">uh</span> importance that we should decide <span class="underline">uh</span> to choose between online and face-to-face communication in order to meet the purposes of the communication and to <span class="underline">um</span> bring us the benefits.</p>
+
+                                <h3>Nhận xét tổng thể</h3>
+                                <p>Nhìn chung, thí sinh thể hiện trình độ tiếng Anh khá vững với khả năng giao tiếp ổn định trên nhiều chủ đề khác nhau. Bài nói cho thấy độ mạch lạc tốt và mức độ chính xác tương đối, nhưng vẫn còn một số vấn đề về phát âm, cách diễn đạt đôi lúc chưa tự nhiên và sự ngập ngừng một vài chỗ gây ảnh hưởng đến độ lưu loát. Điểm mạnh của thí sinh nằm ở vốn từ vựng và khả năng phát triển chủ đề. Tuy nhiên, câu trả lời ở Part 3 quá dài và không khả thi trong điều kiện phòng thi.</p>
+
+                                <h3>Tiêu chí đánh giá chi tiết</h3>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Tiêu chí</th>
+                                            <th>Điểm</th>
+                                            <th>Nhận xét</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Fluency & coherence (Tính lưu loát và mạch lạc)</td>
+                                            <td>6-7</td>
+                                            <td><strong>Điểm mạnh:</strong> Nói với độ dài hợp lý mà không có quá nhiều khoảng dừng lớn (phù hợp với mức Band 6-7). Nhìn chung duy trì được tính mạch lạc trong các câu trả lời. Sử dụng khá hiệu quả một số cụm từ nối ("Speaking of leisure activities," "When it comes to technology"). Có cố gắng phát triển chủ đề theo hệ thống (Part 2 bám theo cấu trúc cue card). Có nỗ lực liên kết các ý trong cùng chủ đề.<br><br><strong>Điểm yếu:</strong> Lặp lại, tự sửa lỗi, bắt đầu lại câu và sự ngập ngừng xuất hiện khá thường xuyên. Đôi khi sự do dự và lặp lại làm gián đoạn mạch nói. Có nhiều từ đệm như "Um" và "Uh" (chấp nhận được ở mức vừa phải nhưng vẫn nên giảm). Lạm dụng một số dấu hiệu diễn ngôn, đặc biệt là "and" khi mở đầu câu hoặc mệnh đề.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lexical resource (Từ vựng và diễn đạt)</td>
+                                            <td>6-7</td>
+                                            <td><strong>Điểm mạnh:</strong> Vốn từ đủ để xử lý nhiều chủ đề khác nhau (thể dục, công nghệ, giao tiếp). Có cố gắng sử dụng một số từ/cụm từ ít phổ biến hơn như indulge in, prioritized item, double-edged sword, rigid, upbeat rhythm, comprises, features, notion, keep track of, inevitable, gestures, collapsed. Sử dụng tốt từ vựng theo chủ đề (âm nhạc, y tế, công nghệ, giao tiếp). Có khả năng dùng từ đồng nghĩa để tạo sự đa dạng.<br><br><strong>Điểm yếu:</strong> Một số cách diễn đạt dùng sai hoặc chưa tự nhiên, ví dụ: give little attention to technology, buried under with a lot of uh assignments, heartbeat counter, the importance of technological um application into the healthcare field, make my calling more convenient, cognitivism of young people</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Grammatical range & accuracy (Ngữ pháp)</td>
+                                            <td>7</td>
+                                            <td><strong>Điểm mạnh:</strong> Nhìn chung sử dụng đúng các cấu trúc câu đơn. Có sử dụng kết hợp cả câu đơn và câu phức. Một số câu phức được dùng khá chính xác: "When listening to these kinds of songs, I can indulge in the upbeat rhythm..." và "Despite their certain similarities, they have several differences between them". Mệnh đề quan hệ nhìn chung được sử dụng tốt. Hòa hợp chủ ngữ - động từ phần lớn chính xác. Thì được sử dụng phù hợp trong đa số ngữ cảnh.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Pronunciation (Phát âm)</td>
+                                            <td>7</td>
+                                            <td>Có một số lỗi phát âm ở các từ như "content," "communication," và "contact." Nhìn chung ở mức chấp nhận được.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Overall estimated band (tổng điểm)</td>
+                                            <td>6.5</td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Writing Feedback -->
+                        <div id="writingFeedback" style="display: none;">
+                            <div class="language-toggle">
+                                <button class="lang-btn active" onclick="switchLanguage('en', 'writing')">English</button>
+                                <button class="lang-btn" onclick="switchLanguage('vi', 'writing')">Tiếng Việt</button>
+                            </div>
+
+                            <!-- English Version -->
+                            <div class="language-section active" id="writing-en">
+                                <h3>Task Overview</h3>
+                                <p><strong>Task:</strong> <strong>Scientists agree that many people eat too much junk food and it is damaging their health. Some people think that this problem can be solved by education, while others believe that this education will not work. Discuss both views and give your opinion.</strong></p>
+
+                                <h3>Candidate's Essay</h3>
+                                <p>High junk food consumption has been confirmed detrimental to our well-being and many claim that this issue can be solved within <strong>an educational approach</strong>, while others do not agree so. Personally, education has both pros and cons in certain aspects.</p>
+
+                                <p>On one hand, education about the effects of junk food can be <strong>transmitted via various means</strong>. One of the most popular ways might be early education for young children. At home, parents may educate them by preparing healthy diets and informing children with practical knowledge about what they consume daily. At schools, children have opportunities to get access to information about food through textbooks and science lessons. By this way, children will be able to develop a solid foundation of healthy diets positively affecting their eating habits at a very young age. Moreover, education may be conducted by raising public awareness. Governments and health organizations play an essential role in producing and promoting advertisements <strong>indicating consequent illnesses</strong> due to high consumption of junk food such as diabetes or heartstroke. Green campaigns can also be introduced in order to <strong>align the source of fiber and natural components to people's daily diets</strong>. This might lead to oily or processed food reduction and derivation of healthier food sources.</p>
+
+                                <p>On the other hand, education may encounter <strong>certain difficulties which will not work properly</strong>. Fast food or processed food brands have been building images of their products as convenient, mouth-watering and made with fresh ingredients. Over a prolonged period, this has <strong>constructed a fixed notion of</strong> junk food in our mindsets, particularly the elderly people. In addition, the educational approaches seem to be theory-based and the consequences of junk food to our health may take time to occur. This, therefore, <strong>encourages the images of famous junk food brands</strong> and people will have a tendency to trust their tastes and visuals more than theoretical explanations.</p>
+
+                                <p>From my perspective, junk food is becoming more and more <strong>multi-nationally widespread</strong> and is having a negative impact on our health. Education, despite their certain drawbacks, seems to be the key solution to this issue. From early diets education for children to mass awareness-raising activities, I strongly believe we may shape our eating habits into <strong>a healthier and beneficial version</strong>.</p>
+
+                                <h3>Detailed Evaluation Criteria</h3>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Criterion</th>
+                                            <th>Score</th>
+                                            <th>Comment</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Task Response</td>
+                                            <td>6-7</td>
+                                            <td>The essay addresses both views and presents a personal opinion. There are some genuinely interesting and relevant ideas: the distinction between home education and school education, the role of advertising by food brands in creating fixed mindsets, and the theory-versus-practice gap in education are all thoughtful points. However, several issues limit the score. The introduction's framing (education has both pros and cons) is vague and does not reflect the actual debate, which is about whether education can solve the junk food problem. The second body paragraph's argument that education won't work because brand marketing is powerful is relevant, but the point about education being "theory-based" is underdeveloped and not clearly connected to the claim that it won't change behaviour. Some key questions to help you develop this idea: What is meant by theory-based? Why is theory-based education not effective in changing habits? What can be done to make education less theoretical and more practical? Also, be careful with the phrase "practical knowledge" in the first body paragraph as it seems contradictory to the point of theory-based education.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Coherence & Cohesion</td>
+                                            <td>7</td>
+                                            <td>There is a clear overall structure with logical progression from introduction through body to conclusion. Cohesive devices are used with reasonable variety: moreover, on the other hand, in addition, therefore, despite. Paragraph topic sentences are generally clear.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lexical resource</td>
+                                            <td>6-7</td>
+                                            <td>There is a wider range of vocabulary than the lower-band essays, and the writer attempts less common items with some success: detrimental, prolonged period, mass awareness-raising, fixed notion. Collocation awareness is evident in places. However, there are noticeable errors and imprecisions:<br>• "heartstroke" (should be heart disease or stroke — "heartstroke" does not exist)<br>• "consequent illnesses" (resulting illnesses / illnesses that result from)<br>• "derivation of healthier food sources" (the intended meaning is unclear, perhaps adoption of healthier food sources)<br>• "informing children with practical knowledge" (providing children with)<br>Other unnatural phrases are emphasized in bold. These are recurring enough to limit precision but do not prevent communication overall.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Grammatical range & accuracy</td>
+                                            <td>6-7</td>
+                                            <td>The essay demonstrates a mix of simple and complex structures, and complex sentences are generally attempted with reasonable accuracy. Relative clauses, gerund phrases, and multi-clause sentences appear throughout. Key errors:<br>• "education may encounter certain difficulties which will not work properly" — the relative clause attaches to difficulties but the intended meaning is that education will not work, creating a logical mismatch.<br>• "the elderly people" should be the elderly or elderly people (not both).<br>• "High junk food consumption has been confirmed detrimental" requires confirmed to be detrimental or confirmed as detrimental.<br>These errors occur with enough frequency to be noticeable but generally do not impede understanding.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Overall estimated band</td>
+                                            <td>6.5</td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Vietnamese Version -->
+                            <div class="language-section" id="writing-vi">
+                                <h3>Tổng quan về bài viết</h3>
+                                <p><strong>Đề bài:</strong> Scientists agree that many people eat too much junk food and it is damaging their health. Some people think that this problem can be solved by education, while others believe that this education will not work. Discuss both views and give your opinion. (Các nhà khoa học đồng ý rằng nhiều người ăn quá nhiều thức ăn nhanh và nó đang tổn hại sức khỏe của họ. Một số người nghĩ rằng vấn đề này có thể được giải quyết bằng giáo dục, trong khi những người khác tin rằng giáo dục sẽ không hoạt động. Thảo luận cả hai quan điểm và đưa ra ý kiến của bạn.)</p>
+
+                                <h3>Bài viết của thí sinh</h3>
+                                <p>High junk food consumption has been confirmed detrimental to our well-being and many claim that this issue can be solved within <strong>an educational approach</strong>, while others do not agree so. Personally, education has both pros and cons in certain aspects.</p>
+
+                                <p>On one hand, education about the effects of junk food can be <strong>transmitted via various means</strong>. One of the most popular ways might be early education for young children. At home, parents may educate them by preparing healthy diets and informing children with practical knowledge about what they consume daily. At schools, children have opportunities to get access to information about food through textbooks and science lessons. By this way, children will be able to develop a solid foundation of healthy diets positively affecting their eating habits at a very young age. Moreover, education may be conducted by raising public awareness. Governments and health organizations play an essential role in producing and promoting advertisements <strong>indicating consequent illnesses</strong> due to high consumption of junk food such as diabetes or heartstroke. Green campaigns can also be introduced in order to <strong>align the source of fiber and natural components to people's daily diets</strong>. This might lead to oily or processed food reduction and derivation of healthier food sources.</p>
+
+                                <p>On the other hand, education may encounter <strong>certain difficulties which will not work properly</strong>. Fast food or processed food brands have been building images of their products as convenient, mouth-watering and made with fresh ingredients. Over a prolonged period, this has <strong>constructed a fixed notion of</strong> junk food in our mindsets, particularly the elderly people. In addition, the educational approaches seem to be theory-based and the consequences of junk food to our health may take time to occur. This, therefore, <strong>encourages the images of famous junk food brands</strong> and people will have a tendency to trust their tastes and visuals more than theoretical explanations.</p>
+
+                                <p>From my perspective, junk food is becoming more and more <strong>multi-nationally widespread</strong> and is having a negative impact on our health. Education, despite their certain drawbacks, seems to be the key solution to this issue. From early diets education for children to mass awareness-raising activities, I strongly believe we may shape our eating habits into <strong>a healthier and beneficial version</strong>.</p>
+
+                                <h3>Tiêu chí đánh giá chi tiết</h3>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Tiêu chí</th>
+                                            <th>Điểm</th>
+                                            <th>Nhận xét</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Task Response (Đáp ứng đề)</td>
+                                            <td>6-7</td>
+                                            <td>Bài viết đề cập đến cả hai quan điểm và có đưa ra ý kiến cá nhân. Có một số ý tưởng thú vị và phù hợp (giáo dục ở gia đình và trường học, quảng cáo từ các thương hiệu thực phẩm hình thành tư duy cố định ở người tiêu dùng, khoảng cách giữa lý thuyết với thực tế trong giáo dục, …). Đây đều là những luận điểm hay, đáng chú ý. Tuy nhiên, vẫn có một số điểm yếu. Thesis statement ở phần mở bài (education has both pros and cons) vẫn còn mơ hồ và chưa đánh đúng vào trọng tâm của đề (whether education can solve the junk food problem or not). Đoạn body 2 luận điểm giáo dục mang tính lý thuyết là một luận điểm hay nhưng chưa được phát triển đầy đủ và chưa kết nối rõ với luận đề vì sao nó không thể thay đổi hành vi của người tiêu dùng. Một số câu hỏi để phát triển ý này sâu hơn: "Theory-based" ở đây cụ thể là như thế nào? Vì sao giáo dục thiên về lý thuyết lại không hiệu quả trong việc thay đổi thói quen? Cần làm gì để giáo dục bớt lý thuyết và mang tính thực hành hơn? Ngoài ra, cần cẩn thận với cụm "practical knowledge" ở đoạn body 1 vì nó có thể mâu thuẫn với lập luận "theory-based" ở body 2.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Coherence & Cohesion (Liên kết và mạch lạc)</td>
+                                            <td>7</td>
+                                            <td>Bài viết có cấu trúc tổng thể rõ ràng với mạch phát triển logic từ mở bài đến thân bài đến kết luận. Các từ nối được sử dụng khá đa dạng và hợp lý như moreover, on the other hand, in addition, therefore, despite. Câu chủ đề của các đoạn nhìn chung khá rõ ràng.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lexical resource (Từ vựng và diễn đạt)</td>
+                                            <td>6-7</td>
+                                            <td>Phạm vi từ vựng rộng hơn so với các bài ở mức điểm thấp. Người viết có cố gắng sử dụng một số từ vựng ít phổ biến với mức độ thành công nhất định như detrimental, prolonged period, mass awareness-raising, fixed notion. Ở một số chỗ cũng cho thấy nhận thức khá tốt về collocation. Tuy nhiên, vẫn có những lỗi diễn đạt thiếu chính xác như:<br>• "heartstroke" (nên là heart disease hoặc stroke, không có từ "heartstroke")<br>• "consequent illnesses" (nên là resulting illnesses hoặc illnesses that result from)<br>• "derivation of healthier food sources" (nghĩa chưa rõ, có thể người viết muốn nói adoption of healthier food sources)<br>• "informing children with practical knowledge" (nên là providing children with)<br>Ngoài ra còn có một số cụm từ chưa tự nhiên khác. Những lỗi này xuất hiện đủ nhiều để làm giảm độ chính xác, nhưng nhìn chung vẫn không cản trở việc truyền tải ý nghĩa.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Grammatical range & accuracy (Ngữ pháp)</td>
+                                            <td>6-7</td>
+                                            <td>Bài viết sử dụng kết hợp cả câu đơn và câu phức, và các cấu trúc phức nhìn chung được sử dụng với độ chính xác tương đối. Mệnh đề quan hệ, cụm danh động từ và các câu nhiều mệnh đề xuất hiện xuyên suốt bài. Các lỗi chính:<br>• "education may encounter certain difficulties which will not work properly": mệnh đề quan hệ đang bổ nghĩa cho difficulties, trong khi ý định thực sự là education không hoạt động hiệu quả, tạo ra sự lệch logic.<br>• "the elderly people": nên là the elderly hoặc elderly people (không dùng cả hai cùng lúc).<br>• "High junk food consumption has been confirmed detrimental": nên là confirmed to be detrimental hoặc confirmed as detrimental.<br>Các lỗi này xuất hiện với tần suất đủ để được chú ý nhưng nhìn chung vẫn không cản trở việc hiểu ý.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Overall estimated band (tổng điểm)</td>
+                                            <td>6.5</td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="controls">
+                            <button class="btn-back" onclick="backToScores()">Back to Scores</button>
+                            <button class="btn-switch" onclick="toggleFeedback()">View <span id="switchText">Writing</span> Feedback</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentFeedback = 'speaking';
+
+        function startExam() {
+            const name = document.getElementById('nameInput').value.trim();
+            if (!name) {
+                alert('Please enter your name');
+                return;
+            }
+            document.getElementById('displayName').textContent = name;
+            goToPage('scores');
+        }
+
+        function goToPage(pageName) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.querySelector('.page-' + pageName).classList.add('active');
+        }
+
+        function goToFeedback(type) {
+            currentFeedback = type;
+            document.getElementById('speakingFeedback').style.display = type === 'speaking' ? 'block' : 'none';
+            document.getElementById('writingFeedback').style.display = type === 'writing' ? 'block' : 'none';
+            document.getElementById('feedbackTitle').textContent = (type === 'speaking' ? 'Speaking' : 'Writing') + ' Feedback';
+            document.getElementById('switchText').textContent = type === 'speaking' ? 'Writing' : 'Speaking';
+            goToPage('feedback');
+        }
+
+        function backToScores() {
+            goToPage('scores');
+        }
+
+        function toggleFeedback() {
+            const newType = currentFeedback === 'speaking' ? 'writing' : 'speaking';
+            goToFeedback(newType);
+        }
+
+        function switchLanguage(lang, section) {
+            const buttons = event.target.parentElement.querySelectorAll('.lang-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const sections = event.target.parentElement.parentElement.querySelectorAll('.language-section');
+            sections.forEach(sec => sec.classList.remove('active'));
+            document.getElementById(section + '-' + lang).classList.add('active');
+        }
+    </script>
+</body>
+</html>
